@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="header.css">
+    <link rel="stylesheet" href="blog.css">
+</head>
+<body>
+    <header class="site-header">
+        <div class="site-header_start">
+             <a href="#" class="brand" th:text="${name}"></a>
+             <a href="" class="logout">ログアウト</a>
+        </div>
+        <div class="site-header_mid">
+            <img src="logo.png" alt="blog-logo" class="logo">
+           <div class="ullist">
+            <ul class="list">
+                <li><a href="">Home</a></li>
+                <li><a href="">Register</a></li>
+                <li><a href="">Delete</a></li>
+            </ul>
+        </div>
+        </div>
+    </header>
+    <main>
+        <h2>Blog list</h2>
+
+    </main>
+    <footer id="footer">
+		<p class="copyright"> &copy;2023.08</p>
+	</footer>
+</body>
+</html>

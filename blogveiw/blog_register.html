@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="header.css">
+    <link rel="stylesheet" href="blog.css">
+</head>
+<body>
+    <header class="site-header">
+        <div class="site-header_start">
+             <a href="#" class="brand" th:text="${name}"></a>
+             <a href="" class="logout">ログアウト</a>
+        </div>
+        <div class="site-header_mid">
+            <img src="logo.png" alt="blog-logo" class="logo">
+           <div class="ullist">
+            <ul class="list">
+                <li><a href="">Home</a></li>
+                <li><a href="">Register</a></li>
+                <li><a href="">Delete</a></li>
+            </ul>
+        </div>
+        </div>
+    </header>
+    <main>
+        <section class="register-section">
+        <h2>新規記事を追加</h2>
+        <div class="register-form">
+        <form action="" method="post">
+          <div class="register-input">
+           <label for="blogTitle">タイトル</label>
+           <input type="text" name="blogTitle">
+           <label for="blogDate">日付</label>
+           <input type="date" name="blogDate">
+           <label for="category">カテゴリ</label>
+           <input type="text" name="category">
+           <label for="blogImage">画像</label>
+           <input type="file" name="blogImage">
+           <label for="blogDetail">詳細</label>
+           <textarea name="blogDetail" id="" cols="30" rows="10"></textarea>
+         <div class="register-button">
+            <button class="add">登録</button>
+            <button class="back">戻る</button>
+        </div>
+        </div>
+       </form>
+    </div>
+     </section>
+    </main>
+    <footer id="footer">
+		<p class="foot"> Copyright &copy; 2023 Learner All Rights Reserved.</p>
+	</footer>
+</body>
+</html>
