@@ -49,7 +49,7 @@ public class RegisterController {
 	 * @PostMappingアノテーションは、HTTP POSTリクエストに対するマッピングを設定するために使用されます。
 	 * "/register/process"と指定されているので、このエンドポイントは"/user/register/process"でアクセス可能です。
 	 * register()メソッドは、リクエストパラメーターからユーザー情報を取得し、
-	 * UserServiceのcreateAccount()メソッドを呼び出して、新規登録処理を行います。処理が成功した場合、"/user/login"にリダイレクトします。**/
+	 * AccountServiceのcreateAccount()メソッドを呼び出して、新規登録処理を行います。処理が成功した場合、"/user/login"にリダイレクトします。**/
 	/**
 	 * @param accountName ユーザー名
 	 * @param accountEmail　メールアドレス

@@ -10,11 +10,11 @@
   <div class="register">
     <h1>新規登録</h1>
     <form th:action="@{/user/register/process}" method="post">
-       <input type="text" id="name" name="name" placeholder="名前" required>
-       <input type="email" id="email" name="email" placeholder="メールアドレス" required>
-       <input type="password" id="password" name="password" placeholder="パスワード" required>
+       <input type="text" id="name" name="name" placeholder="名前">
+       <input type="email" id="email" name="email" placeholder="メールアドレス">
+       <input type="password" id="password" name="password" placeholder="パスワード">
        <button class="btn-res" type="submit" id="res-button">新規登録</button>
-       <button class="btn-log" type="submit" id="login-button">ログインはこちら</button>
+       <button class="btn-log" type="button" id="login-button" onclick="location.href='/user/login'">ログインはこちら</button>
        
    </form>
  </div>

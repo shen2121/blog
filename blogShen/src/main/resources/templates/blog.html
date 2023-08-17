@@ -4,17 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="header.css">
-    <link rel="stylesheet" href="blog.css">
+    <link rel="stylesheet" th:href="@{/css/header.css}">
+    <link rel="stylesheet" th:href="@{/css/blog.css}">
 </head>
 <body>
     <header class="site-header">
         <div class="site-header_start">
-             <a href="#" class="brand" th:text="${name}"></a>
+             <p th:text="${name}"></p>
              <a href="" class="logout">ログアウト</a>
         </div>
         <div class="site-header_mid">
-            <img src="logo.png" alt="blog-logo" class="logo">
+            <img th:src="@{/img/logo.png}" alt="blog-logo" class="logo">
            <div class="ullist">
             <ul class="list">
                 <li><a href="">Home</a></li>
@@ -27,9 +27,9 @@
     <main>
         <h2>ブログ一覧</h2>
         <div class="blog-list">
-        <img src="logo.png" alt="">
-        <img src="logo.png" alt="">
-        <img src="logo.png" alt="">
+        <img th:src="@{/img/logo.png}" alt="">
+        <img th:src="@{/img/logo.png}" alt="">
+        <img th:src="@{/img/logo.png}" alt="">
         </div>
 
 
