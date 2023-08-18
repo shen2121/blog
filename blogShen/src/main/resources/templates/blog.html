@@ -10,16 +10,16 @@
 <body>
     <header class="site-header">
         <div class="site-header_start">
-             <p th:text="${name}"></p>
-             <a href="" class="logout">ログアウト</a>
+             <a href="#" th:text="${accountName}"></a>
+             <a th:href="@{/user/blog/logout}" class="logout">ログアウト</a>
         </div>
         <div class="site-header_mid">
             <img th:src="@{/img/logo.png}" alt="blog-logo" class="logo">
            <div class="ullist">
             <ul class="list">
-                <li><a href="">Home</a></li>
-                <li><a href="">Register</a></li>
-                <li><a href="">Delete</a></li>
+                <li><a th:href="@{/user/blog/list}">Home</a></li>
+                <li><a th:href="@{/user/blog/register}">Register</a></li>
+                <li><a th:href="@{/user/blog/delete/list}">Delete</a></li>
             </ul>
         </div>
         </div>
@@ -27,9 +27,11 @@
     <main>
         <h2>ブログ一覧</h2>
         <div class="blog-list">
-        <img th:src="@{/img/logo.png}" alt="">
-        <img th:src="@{/img/logo.png}" alt="">
-        <img th:src="@{/img/logo.png}" alt="">
+			<article class="blog-topic-article" th:each="blog:${blogList}">
+				<a th:href="@{/user/blog/edit/{blogId}(blogId=${blog.blogId})}" class="blog-colum">
+                 <img th:src="@{/blog-img/{items}(items=${blog.blogImage})}">
+               </a>
+           </article>
         </div>
 
 

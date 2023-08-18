@@ -10,8 +10,8 @@
 <body>
     <header class="site-header">
         <div class="site-header_start">
-             <a href="#" class="brand" th:text="${name}"></a>
-             <a href="" class="logout">ログアウト</a>
+             <a href="#" th:text="${accountName}"></a>
+             <a th:href="@{/user/blog/logout}" class="logout">ログアウト</a>
         </div>
         <div class="site-header_mid">
             <img src="logo.png" alt="blog-logo" class="logo">

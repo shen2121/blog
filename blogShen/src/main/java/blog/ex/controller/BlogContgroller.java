@@ -1,10 +1,26 @@
 package blog.ex.controller;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.Date;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
+import blog.ex.model.entity.AccountEntity;
+import blog.ex.model.entity.BlogEntity;
 import blog.ex.service.BlogService;
+import jakarta.servlet.http.HttpSession;
 
 /**
  * @RequestMappingアノテーションは、HTTPリクエストに対するマッピングを設定するために使用されます。
@@ -49,4 +65,186 @@ public class BlogContgroller {
 	 * プロトコル（protocol）は、通信やデータのやり取りを行う際の手順や規約のことを指します
 	 * 。つまり、ある種の共通のやり取りの方式やルールを決め、それに従って通信やデータのやり取りを行うことで、
 	 * 情報の正確な伝達や効率的な処理を実現するための仕組みです。**/
+	@Autowired 
+	private HttpSession session;
+	/**@GetMappingアノテーションがgetBlogListPageメソッドに付与されています。
+	 * このアノテーションは、HTTP GETリクエストを受け取るメソッドであることを示します。**/
+	@GetMapping("/list")
+	/**getBlogListPageメソッドは、Modelクラスのインスタンスを引数に取ります。Modelは、
+	 * コントローラーからビューに渡すためのデータを格納するために使用されます。**/
+	public String getBlogListPage(Model model) {
+		/**
+		 * セッションから現在のユーザー情報を取得するため、sessionオブジェクトを使用しています。
+		 * AccountEntityのインスタンスが取得できた場合、そのaccountrIdを取得しています。**/
+		AccountEntity accountList = (AccountEntity) session.getAttribute("account");
+		Long accountId = accountList.getAccountId();
+		/**
+		 * accountListから現在ログインしている人のユーザー名を取得**/
+		String accountName = accountList.getAccountName();
+		/**
+		 * blogServiceのfindAllBlogPostメソッドを呼び出して、現在のユーザーに関連するブログ投稿を取得しています。
+		 * 戻り値はBlogEntityのリストであり、このリストをmodelに追加しています。**/
+		List<BlogEntity>blogList = blogService.findAllBlogPost(accountId);
+		/**
+		 * ModelクラスにaccountNameとblogListを追加して、blog.htmlというビューを返しています。
+		 * このビューは、accountNameとblogListを表示するためのHTMLテンプレート**/
+		model.addAttribute("accountName",accountName);
+		model.addAttribute("blogList", blogList);
+		return "blog.html";
+	}
+	@GetMapping("/register")
+	public String getBlogRegisterPage(Model model) {
+		/**
+		 * セッションから現在のユーザー情報を取得するため、sessionオブジェクトを使用しています。
+		 **/
+		AccountEntity accountList = (AccountEntity)session.getAttribute("account");
+		/**
+		 * accountListから現在ログインしている人のユーザー名を取得**/
+		String accountName = accountList.getAccountName();
+		model.addAttribute("accountName", accountName);
+		model.addAttribute("registerMessage", "新規記事追加");
+		return "blog-register.html";
+	}
+	/**このメソッドはブログの投稿を処理するためのメソッドで以下のような処理を行っています。
+	 *セッションから現在のユーザー情報を取得し、そのaccountIdを取得する。
+	 *画像ファイル名を取得する。
+	 *画像ファイルをアップロードする。
+	 *createBlogPost()メソッドを呼び出して、ブログをデータベースに登録する。
+	 *登録に成功した場合は、blog-register-fix.htmlにリダイレクトする。
+	 *登録に失敗した場合は、エラーメッセージをモデルに追加し、blog-register.htmlに戻る。 **/
+	/**
+	 * @param blogTitle ブログタイトル
+	 * @param registerDate　登録日
+	 * @param category　カテゴリー
+	 * @param blogImage　画像イメージ
+	 * @param article　ブログ詳細
+	 * @param model
+	 * @return
+	 */
+	@PostMapping("/register/process")
+	/**
+	 * @RequestParamアノテーション：
+	 * このアノテーションは、HTTPリクエストのパラメーターを引数にバインドするために使用されます。
+	 * ブログの投稿時に、ブログのタイトル、投稿日、カテゴリ、画像ファイル、詳細をパラメータとして受け取ります。**/
+	/**
+	 * MultipartFile：
+	 * MultipartFileは、Spring Frameworkが提供するインターフェースで、
+	 * アップロードされたファイルの内容を扱うためのメソッドを提供しています。**/
+	public String blogRegister(@RequestParam String blogTitle,
+			@RequestParam LocalDate registerDate, 
+			@RequestParam String category,
+			@RequestParam MultipartFile blogImage,
+			@RequestParam String article,Model model) {
+		/**
+		 * セッションから現在のユーザー情報を取得するため、sessionオブジェクトを使用しています。
+		 * AccoluntEntityのインスタンスが取得できた場合、そのaccountIdを取得しています。**/
+		AccountEntity accountList = (AccountEntity) session.getAttribute("account");
+		Long accountId = accountList.getAccountId();
+		/**現在の日時情報を元に、ファイル名を作成しています。SimpleDateFormatクラスを使用して、日時のフォーマットを指定している。
+		 * 具体的には、"yyyy-MM-dd-HH-mm-ss-"の形式でフォーマットされた文字列を取得している。
+		 * その後、blogImageオブジェクトから元のファイル名を取得し、フォーマットされた日時文字列と連結して、fileName変数に代入**/
+		String fileName = new SimpleDateFormat("yyyy-MM-dd-HH-ss-").format(new Date()) + blogImage.getOriginalFilename();
+		try {
+			/**ファイルを実際にサーバー上に保存するための処理を行っています。Files.copy()メソッドを使用して、
+			 * blogImageオブジェクトから入力ストリームを取得し、指定されたパスにファイルをコピー。
+			 * Path.of()メソッドを使用して、保存先のパスを指定している。
+			 * 保存先のパスは、"src/main/resources/static/blog-img/"というディレクトリの中に
+			 * 、fileNameで指定されたファイル名で保存される。。**/
+			Files.copy(blogImage.getInputStream(),Path.of("src/main/resources/static/blog-img/" + fileName));
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		/**
+		 * 最後に、blogService.createBlogPost()メソッドが呼び出され、入力されたデータをデータベースに保存します。
+		 * blogTitle、registerDate、fileName、blogDetail、category、userIdの各引数を使用して、BlogEntityオブジェクトを生成し、
+		 * blogDao.save()メソッドを使用して、データベースに保存します。
+		 * createBlogPost()メソッドはboolean型の戻り値を返します。trueが返された場合は、blog-register-fix.htmlページが表示され、
+		 * falseが返された場合は、既に登録済みであることを示すメッセージが含まれたblog-register.htmlページが表示されます。**/
+		if(blogService.createBlogPost(blogTitle, registerDate, category, fileName, article, accountId)) {
+			return "blog-register-fix.html";
+		}else {
+			model.addAttribute("registerMessage", "既に登録済みです");
+			return "blog-register.html";
+		}
+	}
+	/**
+	 * @GetMapping("/edit/{blogId}")アノテーションによって、
+	 * GETメソッドで"/edit/{blogId}"にアクセスされた場合に、getBlogEditPage()メソッドが呼び出されます。
+	 * このメソッドは、@PathVariableアノテーションを使用して、URLからパス変数のblogIdを取得しています。**/
+	@GetMapping("/edit/{blogId}")
+	 public String getBlogEditPage(@PathVariable Long blogId,Model model) {
+		 /**
+			 * セッションから現在のユーザー情報を取得するため、sessionオブジェクトを使用しています。
+			 * AccountEntityのインスタンスが取得できた場合、そのaccountIdを取得しています。**/
+		AccountEntity accountList = (AccountEntity) session.getAttribute("account");
+		 /**
+			 * accountListから現在ログインしている人のユーザー名を取得**/
+	 String accountName = accountList.getAccountName();
+		 model.addAttribute("accountName",accountName);
+		 /**blogService.getBlogPost(blogId)を使用して、
+			 * 指定されたblogIdに対応するブログを取得し、blogListに代入します。**/
+		BlogEntity blogList = blogService.getBlogPost(blogId);
+		/**blogListがnullであれば、"/user/blog/list"にリダイレクトします。**/
+	if(blogList == null) {
+			return "redirecr:/user/blog/list";
+		}else {
+			/**blogListと"記事編集"というメッセージをModelオブジェクトに追加し、"blog-edit.html"に遷移します。**/
+		model.addAttribute("blogList",blogList);
+		model.addAttribute("editMessage", "記事編集");
+		 return "blog-edit.html";
+		}
+	 }
+	/**
+	 * @param blogTitle ブログタイトル
+	 * @param registerDate　登録日
+	 * @param category　カテゴリー
+	 * @param blogId　ブログId
+	 * @param article　ブログ詳細
+	 * @param model
+	 * @return
+	 */
+	@PostMapping("/update")
+	/**
+	 * @RequestParamアノテーション：
+	 * このアノテーションは、HTTPリクエストのパラメーターを引数にバインドするために使用されます。
+	 * ブログの投稿時に、ブログのタイトル、投稿日、カテゴリ、、詳細をパラメータとして受け取ります。**/
+	public String blogUpdate(@RequestParam String blogTitle,
+			@RequestParam LocalDate registerDate, 
+			@RequestParam String category,
+			@RequestParam String article,
+			@RequestParam Long blogId,Model model) {
+		/**
+		 * セッションから現在のユーザー情報を取得するため、sessionオブジェクトを使用しています。
+		 * AccountEntityのインスタンスが取得できた場合、そのaccountIdを取得しています。**/
+		AccountEntity accountList = (AccountEntity) session.getAttribute("account");
+		Long accountId = accountList.getAccountId();
+		/**blogService.editBlogPost()を使用して、指定されたblogIdに対応するブログを更新します。
+		 * 更新が成功した場合は、"blog-edit-fix.html"に遷移し、
+		 * 更新に失敗した場合は、"blog-edit.html"に"更新に失敗しました"というメッセージを追加して遷移します。**/
+		if(blogService.editBlogPost(blogTitle, registerDate, category, article, accountId, blogId)) {
+			return "blog-edit-fix.html";
+		}else {
+			model.addAttribute("registerMessage", "更新に失敗しました");
+			return "blog-edit.html";
+		}
+	}
+	
+	
+	
+	/**
+	 * @GetMapping("/logout")は、"/logout"エンドポイントに対するHTTP GETリクエストを処理するためのアノテーションです。
+	 * public String Logout()は、ログアウト処理を行うメソッドです。このメソッドは、セッションを無効にして
+	 * 、"/user/login"にリダイレクトすることで、ログアウトを実行します。
+	 * session.invalidate();は、現在のセッションを無効にするために使用されるコードです
+	 * これにより、ユーザーがログアウトしたことが確認されます。
+	 * return "redirect:/user/login";は、"/user/login"にリダイレクトするために使用されるコードです。
+	 * これにより、ログアウト後にユーザーがログインページにリダイレクトされます。
+	 * したがって、このコードは、セッションを無効にして、ユーザーをログアウトし、
+	 * ログインページにリダイレクトすることにより、ユーザーの認証を管理します。**/
+	@GetMapping("/logout")
+	public String Logout() {
+		
+		session.invalidate();
+		return "redirect:/user/login";
+	}
 }

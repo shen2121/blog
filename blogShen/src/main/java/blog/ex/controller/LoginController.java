@@ -60,7 +60,7 @@ public class LoginController {
 			return "redirect:/user/login";
 		}else {
 			session.setAttribute("account", accountList);
-			return "blog.html";
+			return "redirect:/user/blog/list";
 		}
 	}
 }
