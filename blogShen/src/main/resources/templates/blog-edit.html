@@ -1,62 +1,66 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" th:href="@{/css/header.css}">
-    <link rel="stylesheet" th:href="@{/css/blog.css}">
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+	<link rel="stylesheet" th:href="@{/css/header.css}">
+	<link rel="stylesheet" th:href="@{/css/blog.css}">
 </head>
+
 <body>
-    <header class="site-header">
-        <div class="site-header_start">
-             <a href="#" th:text="${accountName}"></a>
-             <a th:href="@{/user/blog/logout}" class="logout">ログアウト</a>
-        </div>
-        <div class="site-header_mid">
-            <img th:src="@{/img/logo.png}"alt="blog-logo" class="logo">
-           <div class="ullist">
-            <ul class="list">
-                <li><a th:href="@{/user/blog/list}">Home</a></li>
-                <li><a th:href="@{/user/blog/register}">Register</a></li>
-                <li><a th:href="@{/user/blog/delete/list}">Delete</a></li>
-            </ul>
-        </div>
-        </div>
-    </header>
-    <main>
-        <section class="register-section">
-        <h2>記事編集</h2>
-        <div class="register-form">
-         <div class="edit-img">
-            <div>画像</div>
-         <img th:src="@{/blog-img/{items}(items=${blogList.blogImage})}"><br>
-         <button class="change" th:attr="onClick='location.href=\''+'/user/blog/image/edit/'+${blogList.blogId}+'\''">画像変更</button>
-         </div>
-         <form th:action="@{/user/blog/update}" method="post">
-            <div class="register-input">
-                <label for="blogTitle">タイトル</label>
-                <input type="text" name="blogTitle" th:value="${blogList.blogTitle}">
-                <label for="registerDate">日付</label>
-                <input type="date" name="registerDate" th:value="${blogList.registerDate}">
-                <label for="category">カテゴリ</label >
-                <input type="text" name="category" th:value="${blogList.category}">
-                <label for="article">詳細</label>
-                <textarea name="article" id="" cols="40" rows="10"  th:text="${blogList.article}"></textarea>
-                 <input type="hidden" name="blogId" th:value="${blogList.blogId}">
-              <div class="register-button">
-                 <button class="add">変更</button>
-                 <button class="back" type="button" onclick="history.back();">戻る</button>
-             </div>
-             </div>
+	<header class="site-header">
+		<div class="site-header_start">
+			<a href="#" th:text="${accountName}"></a>
+			<a th:href="@{/user/blog/logout}" class="logout">ログアウト</a>
+		</div>
+		<div class="site-header_mid">
+			<img th:src="@{/img/logo.png}" alt="blog-logo" class="logo">
+			<div class="ullist">
+				<ul class="list">
+					<li><a th:href="@{/user/blog/list}">Home</a></li>
+					<li><a th:href="@{/user/blog/register}">Register</a></li>
+					<li><a th:href="@{/user/blog/delete/list}">Delete</a></li>
+				</ul>
+			</div>
+		</div>
+	</header>
+	<main>
+		<section class="register-section">
+			<h2>記事編集</h2>
+			<div class="register-form">
+				<div class="edit-img">
+					<div>画像</div>
+					<img th:src="@{/blog-img/{items}(items=${blogList.blogImage})}"><br>
+					<button class="change"
+						th:attr="onClick='location.href=\''+'/user/blog/image/edit/'+${blogList.blogId}+'\''">画像変更</button>
+				</div>
+				<form th:action="@{/user/blog/update}" method="post">
+					<div class="register-input">
+						<label for="blogTitle">タイトル</label>
+						<input type="text" name="blogTitle" th:value="${blogList.blogTitle}">
+						<label for="registerDate">日付</label>
+						<input type="date" name="registerDate" th:value="${blogList.registerDate}">
+						<label for="category">カテゴリ</label>
+						<input type="text" name="category" th:value="${blogList.category}">
+						<label for="article">詳細</label>
+						<textarea name="article" id="" cols="40" rows="10" th:text="${blogList.article}"></textarea>
+						<input type="hidden" name="blogId" th:value="${blogList.blogId}">
+						<div class="register-button">
+							<button class="add">変更</button>
+							<button class="back" type="button" onclick="history.back();">戻る</button>
+						</div>
+					</div>
 
 
-       </form>
-    </div>
-     </section>
-    </main>
-    <footer id="footer">
+				</form>
+			</div>
+		</section>
+	</main>
+	<footer id="footer">
 		<p class="foot"> Copyright &copy; 2023 Learner All Rights Reserved.</p>
 	</footer>
 </body>
+
 </html>

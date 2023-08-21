@@ -9,61 +9,32 @@ import org.springframework.stereotype.Service;
 import blog.ex.model.dao.BlogDao;
 import blog.ex.model.entity.BlogEntity;
 
-/**Spring Frameworkの@Serviceアノテーションを使用して、
- * ブログ投稿に関するビジネスロジックを実装したBlogServiceクラスを定義*/
 @Service
 public class BlogService {
-	/**
-	 * @Autowired private BlogDao blogDao;
-	 * accountテーブルにアクセスして操作するため、AccountDaoクインタフェース
-	 * を使えるようにしておきます。
-	 */
+	// AccountDaoクインタフェースを使います
 	@Autowired
 	private BlogDao blogDao;
-	/**findAllBlogPostメソッドは、引数としてaccountIdを取ります。
-	 * accountIdがnullであれば、nullを返します。それ以外の場合は
-	 * blogDao.findByAccountId(accountId)を呼び出して、指定されたaccountIdに対応する
-	 * すべてのブログ投稿を取得し、それらをBlogEntityオブジェクトのリストとして返します。**/
-	/**
-	 * @param accountId ユーザーId
-	 * @return
-	 */
+	//すべてのブログ投稿を取得します
 	public List<BlogEntity> findAllBlogPost(Long accountId){
-		/** accountIdがnullであれば、nullを返します。**/
+		//なかった場合はnullを返します
 		if(accountId == null) {
 			return null;
-			/**それ以外の場合は
-			 * blogDao.findByAccountId(accountId)を呼び出して、指定されたaccountIdに対応する
-			 * すべてのブログ投稿を取得し、それらをBlogEntityオブジェクトのリストとして返します。**/
+			//あった場合
 		}else {
 			return blogDao.findByAccountId(accountId);
 		}
 	}
-	/**このソースコードは、ブログ記事を作成するためのメソッド createBlogPostです。
-	 * メソッドは、ブログ記事のタイトル、登録日、ファイル名、詳細などの情報を受け取ります。**/
-
-	/**
-	 * @param blogTitle　ブログのタイトル
-	 * @param registerDate　登録日
-	 * @param category　カテゴリー
-	 * @param fileName　画像のファイル名
-	 * @param article ブログの詳細文
-	 * @param userId　ユーザーId
-	 * @return
-	 */
+	//ブログ記事を保存します
 	public boolean createBlogPost(String blogTitle,LocalDate registerDate,String category,String fileName,String article,Long accountId) {
-		/**
-		 * blogDao.findByBlogTitleAndRegisterDate(blogTitle, registerDate) によって、
-		 * 既に同じタイトルと登録日のブログ記事が存在するかを検索します。**/
+		//同じタイトルと登録日の記事が存在するかを検索します
 		BlogEntity blogList = blogDao.findByBlogTitleAndRegisterDate(blogTitle, registerDate);
-		/**
-		 * もし、存在しなければ、新しいブログ記事を作成して blogDao.save() によってデータベースに保存します**/
+		//なかった場合新しい記事作成します
 		if(blogList == null) {
 			blogDao.save(new BlogEntity(blogTitle,registerDate,category,fileName,article,accountId));
-			/**新しいブログ記事が作成され、データベースに保存された場合は、true を返します。**/
+			//
 			return true;
 		}else {
-			/**既に同じタイトルと登録日のブログ記事が存在した場合は、false を返します**/
+			//
 			return false;
 		}
 	}

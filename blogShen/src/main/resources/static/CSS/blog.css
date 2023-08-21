@@ -1,105 +1,125 @@
-.foot{
-    text-align: center;
-    background-color: rgb(246, 242, 254);
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    color: rgb(57, 11, 117);
+.foot {
+	text-align: center;
+	background-color: rgb(246, 242, 254);
+	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+	color: rgb(57, 11, 117);
 }
-.foot-fix{
-    text-align: center;
-    background-color: rgb(246, 242, 254);
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    color: rgb(57, 11, 117);
-    margin-top: 400px;
+
+.foot-fix {
+	text-align: center;
+	background-color: rgb(246, 242, 254);
+	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+	color: rgb(57, 11, 117);
+	margin-top: 400px;
 }
-h2{
-    text-align: center;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    color: rgb(67, 14, 121);
+
+h2 {
+	text-align: center;
+	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+	color: rgb(67, 14, 121);
 }
-.register-input{
-    text-align: center;
-    margin: 0  10px auto;
-    color: rgb(67, 14, 121);
-    padding: 10px;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+.register-input {
+	text-align: center;
+	margin: 0 10px auto;
+	color: rgb(67, 14, 121);
+	padding: 10px;
+	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
-label{
-    display: block;
-    padding: 10px;
-    margin-top: 10px;
+
+label {
+	display: block;
+	padding: 10px;
+	margin-top: 10px;
 }
-input{
-    color:#392771;
+
+input {
+	color: #392771;
 }
-textarea{
-    resize:none;
-    padding:10px;
-    font-size:16px;
-    color:#392771;
-    border: 1px solid #cccccc89;
-    border-radius: 4px;
+
+textarea {
+	resize: none;
+	padding: 10px;
+	font-size: 16px;
+	color: #392771;
+	border: 1px solid #cccccc89;
+	border-radius: 4px;
 }
-.add{
-    color: rgb(255, 255, 255);
-    background-color: rgb(122, 81, 203);
-    border-radius: 2vh;
-    outline-color: black;
-    width: 50px;
-    height: 30px;
-    border-style: none;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    margin-top: 20px;
+
+.add {
+	color: rgb(255, 255, 255);
+	background-color: rgb(122, 81, 203);
+	border-radius: 2vh;
+	outline-color: black;
+	width: 50px;
+	height: 30px;
+	border-style: none;
+	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+	margin-top: 20px;
 }
-.back{
-    color: rgb(255, 255, 255);
-    background-color: rgb(122, 81, 203);
-    border-radius: 2vh;
-    outline-color: black;
-    width: 50px;
-    height: 30px;
-    border-style: none;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+.back {
+	color: rgb(255, 255, 255);
+	background-color: rgb(122, 81, 203);
+	border-radius: 2vh;
+	outline-color: black;
+	width: 50px;
+	height: 30px;
+	border-style: none;
+	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
-.add:hover{
-    color: rgb(122, 81, 203);
-    background-color: rgb(194, 176, 232);
+
+.add:hover {
+	color: rgb(122, 81, 203);
+	background-color: rgb(194, 176, 232);
 }
-.back:hover{
-    color: black;
-    background-color: rgb(147, 144, 156);
+
+.back:hover {
+	color: black;
+	background-color: rgb(147, 144, 156);
 }
-img{
-    width: 200px;
+
+img {
+	width: 200px;
 }
-.blog-list{
-    text-align: center;
-    margin-left: 10px;
+
+.blog-list {
+	display: flex;
+	justify-content: center;
+	margin-left: 10px;
 }
-.change{
-    color: rgb(255, 255, 255);
-    background-color: rgb(122, 81, 203);
-    border-radius: 2vh;
-    outline-color: black;
-    width: 100px;
-    height: 30px;
-    border-style: none;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+.blog-list img{
+	margin-left: 20px;
 }
-.change:hover{
-    color: rgb(122, 81, 203);
-    background-color: rgb(194, 176, 232);
+.change {
+	color: rgb(255, 255, 255);
+	background-color: rgb(122, 81, 203);
+	border-radius: 2vh;
+	outline-color: black;
+	width: 100px;
+	height: 30px;
+	border-style: none;
+	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
-.edit-img{
-    text-align: center;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    color: rgb(67, 14, 121);
+
+.change:hover {
+	color: rgb(122, 81, 203);
+	background-color: rgb(194, 176, 232);
 }
-.img-fix{
-    text-align: center;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    color: rgb(67, 14, 121);
+
+.edit-img {
+	text-align: center;
+	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+	color: rgb(67, 14, 121);
 }
-.img-update{
-    margin-top: 15px;
-    margin-left: 20px;
+
+.img-fix {
+	text-align: center;
+	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+	color: rgb(67, 14, 121);
+}
+
+.img-update {
+	margin-top: 15px;
+	margin-left: 20px;
 }

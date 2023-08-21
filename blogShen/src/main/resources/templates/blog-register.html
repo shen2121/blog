@@ -1,56 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" th:href="@{/css/header.css}">
-    <link rel="stylesheet" th:href="@{/css/blog.css}">
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+	<link rel="stylesheet" th:href="@{/css/header.css}">
+	<link rel="stylesheet" th:href="@{/css/blog.css}">
 </head>
+
 <body>
-    <header class="site-header">
-        <div class="site-header_start">
-             <a href="#" th:text="${accountName}"></a>
-             <a th:href="@{/user/blog/logout}" class="logout">ログアウト</a>
-        </div>
-        <div class="site-header_mid">
-            <img th:src="@{/img/logo.png}" alt="blog-logo" class="logo">
-           <div class="ullist">
-            <ul class="list">
-                <li><a th:href="@{/user/blog/list}">Home</a></li>
-                <li><a th:href="@{/user/blog/register}">Register</a></li>
-                <li><a th:href="@{/user/blog/delete/list}">Delete</a></li>
-            </ul>
-        </div>
-        </div>
-    </header>
-    <main>
-        <section class="register-section">
+	<header class="site-header">
+		<div class="site-header_start">
+			<a href="#" th:text="${accountName}"></a>
+			<a th:href="@{/user/blog/logout}" class="logout">ログアウト</a>
+		</div>
+		<div class="site-header_mid">
+			<img th:src="@{/img/logo.png}" alt="blog-logo" class="logo">
+			<div class="ullist">
+				<ul class="list">
+					<li><a th:href="@{/user/blog/list}">Home</a></li>
+					<li><a th:href="@{/user/blog/register}">Register</a></li>
+					<li><a th:href="@{/user/blog/delete/list}">Delete</a></li>
+				</ul>
+			</div>
+		</div>
+	</header>
+	<main>
+		<section class="register-section">
 			<h2 th:text="${registerMessage}"></h2>
-        <div class="register-form">
-        <form th:action="@{/user/blog/register/process}" enctype="multipart/form-data" method="post">
-          <div class="register-input">
-           <label for="blogTitle">タイトル</label>
-           <input type="text" name="blogTitle">
-           <label for="blogDate">日付</label>
-           <input type="date" name="registerDate">
-           <label for="category">カテゴリ</label>
-           <input type="text" name="category">
-           <label for="blogImage">画像</label>
-           <input type="file" name="blogImage">
-           <label for="article">詳細</label>
-           <textarea name="article" id="" cols="40" rows="10"></textarea>
-         <div class="register-button">
-            <button class="add">登録</button>
-            <button class="back" type="button" onclick="location.href='/user/blog/list'">戻る</button>
-        </div>
-        </div>
-       </form>
-    </div>
-     </section>
-    </main>
-    <footer id="footer">
+			<div class="register-form">
+				<form th:action="@{/user/blog/register/process}" enctype="multipart/form-data" method="post">
+					<div class="register-input">
+						<label for="blogTitle">タイトル</label>
+						<input type="text" name="blogTitle">
+						<label for="blogDate">日付</label>
+						<input type="date" name="registerDate">
+						<label for="category">カテゴリ</label>
+						<input type="text" name="category">
+						<label for="blogImage">画像</label>
+						<input type="file" name="blogImage">
+						<label for="article">詳細</label>
+						<textarea name="article" id="" cols="40" rows="10"></textarea>
+						<div class="register-button">
+							<button class="add">登録</button>
+							<button class="back" type="button" onclick="location.href='/user/blog/list'">戻る</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</section>
+	</main>
+	<footer id="footer">
 		<p class="foot"> Copyright &copy; 2023 Learner All Rights Reserved.</p>
 	</footer>
 </body>
+
 </html>

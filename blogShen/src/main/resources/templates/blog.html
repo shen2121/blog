@@ -1,43 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" th:href="@{/css/header.css}">
-    <link rel="stylesheet" th:href="@{/css/blog.css}">
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+	<link rel="stylesheet" th:href="@{/css/header.css}">
+	<link rel="stylesheet" th:href="@{/css/blog.css}">
 </head>
+
 <body>
-    <header class="site-header">
-        <div class="site-header_start">
-             <a href="#" th:text="${accountName}"></a>
-             <a th:href="@{/user/blog/logout}" class="logout">ログアウト</a>
-        </div>
-        <div class="site-header_mid">
-            <img th:src="@{/img/logo.png}" alt="blog-logo" class="logo">
-           <div class="ullist">
-            <ul class="list">
-                <li><a th:href="@{/user/blog/list}">Home</a></li>
-                <li><a th:href="@{/user/blog/register}">Register</a></li>
-                <li><a th:href="@{/user/blog/delete/list}">Delete</a></li>
-            </ul>
-        </div>
-        </div>
-    </header>
-    <main>
-        <h2>ブログ一覧</h2>
-        <div class="blog-list">
+	<header class="site-header">
+		<div class="site-header_start">
+			<a href="#" th:text="${accountName}"></a>
+			<a th:href="@{/user/blog/logout}" class="logout">ログアウト</a>
+		</div>
+		<div class="site-header_mid">
+			<img th:src="@{/img/logo.png}" alt="blog-logo" class="logo">
+			<div class="ullist">
+				<ul class="list">
+					<li><a th:href="@{/user/blog/list}">Home</a></li>
+					<li><a th:href="@{/user/blog/register}">Register</a></li>
+					<li><a th:href="@{/user/blog/delete/list}">Delete</a></li>
+				</ul>
+			</div>
+		</div>
+	</header>
+	<main>
+		<h2>ブログ一覧</h2>
+		<div class="blog-list">
 			<article class="blog-topic-article" th:each="blog:${blogList}">
 				<a th:href="@{/user/blog/edit/{blogId}(blogId=${blog.blogId})}" class="blog-colum">
-                 <img th:src="@{/blog-img/{items}(items=${blog.blogImage})}">
-               </a>
-           </article>
-        </div>
-
-
-    </main>
-    <footer id="footer">
+					<img th:src="@{/blog-img/{items}(items=${blog.blogImage})}">
+				</a>
+			</article>
+		</div>
+	</main>
+	<footer id="footer">
 		<p class="foot"> Copyright &copy; 2023 Learner All Rights Reserved.</p>
 	</footer>
 </body>
+
 </html>
