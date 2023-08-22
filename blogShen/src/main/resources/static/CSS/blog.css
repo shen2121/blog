@@ -3,6 +3,7 @@
 	background-color: rgb(246, 242, 254);
 	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 	color: rgb(57, 11, 117);
+	margin-top: 80px;
 }
 
 .foot-fix {
@@ -88,9 +89,11 @@ img {
 	justify-content: center;
 	margin-left: 10px;
 }
-.blog-list img{
+
+.blog-list img {
 	margin-left: 20px;
 }
+
 .change {
 	color: rgb(255, 255, 255);
 	background-color: rgb(122, 81, 203);

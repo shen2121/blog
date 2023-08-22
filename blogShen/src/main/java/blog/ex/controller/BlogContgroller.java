@@ -22,327 +22,159 @@ import blog.ex.model.entity.BlogEntity;
 import blog.ex.service.BlogService;
 import jakarta.servlet.http.HttpSession;
 
-/**
- * @RequestMappingアノテーションは、HTTPリクエストに対するマッピングを設定するために使用されます。 "/user"と指定されているので、このコントローラーのすべてのエンドポイントは"/user/blog"で始まります。
- *                                                           エンドポイント（Endpoint）は、Webサービスにおいて、外部からアクセス可能なURLやURIのことを指します。
- *                                                           つまり、クライアント（Webブラウザやスマートフォンアプリなど）がWebサービスにリクエストを送信するために使用するURLのことです。
- */
+//全てのurlの前に/user/blogを追加
 @RequestMapping("/user/blog")
-/**
- * @Controllerアノテーションは、Spring Frameworkがコンポーネントスキャン機能
- *                            によってこのクラスをDIコンテナに登録するために使用されます。
- *                            これにより、UserRegisterControllerクラスは、他のコンポーネントに注入されることができ,
- *                            システム内で一元的に管理されることができます。 コンポーネントスキャン機能は、Spring
- *                            Frameworkにおいて、アノテーションで構成されたクラスを自動的に検出し、
- *                            DIコンテナに登録するための機能です DI（Dependency
- *                            Injection）コンテナは、Spring
- *                            Frameworkが提供する機能の一つで、アプリケーションに必要なオブジェクトを管理する仕組みです。
- *                            通常、アプリケーションに必要なオブジェクトは、new演算子を使用してインスタンス化していますが、
- *                            DIコンテナを使用すると、オブジェクトの生成や注入を自動的に行うことができます。
- **/
+
 @Controller
 public class BlogContgroller {
-	/**
-	 * @Autowiredアノテーションは、DIコンテナが自動的にBlogServiceインスタンスを 注入するために使用されます。これにより、BlogControllerクラスは、
-	 *                                                  BlogServiceクラスのメソッドを呼び出すことができ、指定した処理を実行することができます。
-	 **/
 	@Autowired
 	private BlogService blogService;
-	/**
-	 * HttpSessionとは、Webアプリケーションにおいて、ユーザーごとに状態を保持するためのオブジェクトです。
-	 * HTTPプロトコル()は、通信ごとに新しい接続を確立するため、ユーザーの状態を保持するためには、ユーザーが識別できる情報を保持しておく必要があります。
-	 * HttpSessionは、Webアプリケーション内でユーザーごとに生成され、サーバー側で管理されます。ユーザーごとに一意なIDが割り当てられ、
-	 * このIDを使用して、サーバー上でユーザーのセッション情報を特定します。 HttpSessionは、主に以下のような目的で使用されます。 ログイン状態の維持
-	 * ショッピングカートやフォームの入力情報の保存 ユーザーごとに異なる情報の表示
-	 * このように、HttpSessionを使用することで、ユーザーごとに状態を保持し、よりパーソナライズされたWebアプリケーションを実現することができます。
-	 * しかし、HttpSessionにはセッションの有効期限やサイズ制限などの制限があるため、適切な管理が必要です。
-	 * また、セッション情報には機密性があるため、適切なセキュリティ対策が必要となります。
-	 **/
-	/**
-	 * プロトコル（protocol）は、通信やデータのやり取りを行う際の手順や規約のことを指します
-	 * 。つまり、ある種の共通のやり取りの方式やルールを決め、それに従って通信やデータのやり取りを行うことで、
-	 * 情報の正確な伝達や効率的な処理を実現するための仕組みです。
-	 **/
+
 	@Autowired
 	private HttpSession session;
 
-	/**
-	 * @GetMappingアノテーションがgetBlogListPageメソッドに付与されています。 このアノテーションは、HTTP
-	 * GETリクエストを受け取るメソッドであることを示します。
-	 **/
+	// ブログ一覧画面を取得します
 	@GetMapping("/list")
-	/**
-	 * getBlogListPageメソッドは、Modelクラスのインスタンスを引数に取ります。Modelは、
-	 * コントローラーからビューに渡すためのデータを格納するために使用されます。
-	 **/
+	// コントローラーからビューに渡すためのデータを格納します
 	public String getBlogListPage(Model model) {
-		/**
-		 * セッションから現在のユーザー情報を取得するため、sessionオブジェクトを使用しています。
-		 * AccountEntityのインスタンスが取得できた場合、そのaccountrIdを取得しています。
-		 **/
+		// アカウント情報を取得
+		// accountIdを取得します
 		AccountEntity accountList = (AccountEntity) session.getAttribute("account");
 		Long accountId = accountList.getAccountId();
-		/**
-		 * accountListから現在ログインしている人のユーザー名を取得
-		 **/
+		// アカウント名を取得
 		String accountName = accountList.getAccountName();
-		/**
-		 * blogServiceのfindAllBlogPostメソッドを呼び出して、現在のユーザーに関連するブログ投稿を取得しています。
-		 * 戻り値はBlogEntityのリストであり、このリストをmodelに追加しています。
-		 **/
+		// ユーザーに関連するブログ投稿を取得します
 		List<BlogEntity> blogList = blogService.findAllBlogPost(accountId);
-		/**
-		 * ModelクラスにaccountNameとblogListを追加して、blog.htmlというビューを返しています。
-		 * このビューは、accountNameとblogListを表示するためのHTMLテンプレート
-		 **/
+		// ページでaccountNameとblogListを表示します
 		model.addAttribute("accountName", accountName);
 		model.addAttribute("blogList", blogList);
 		return "blog.html";
 	}
 
+	// ブログ登録画面を取得
 	@GetMapping("/register")
 	public String getBlogRegisterPage(Model model) {
-		/**
-		 * セッションから現在のユーザー情報を取得するため、sessionオブジェクトを使用しています。
-		 **/
+		// アカウント情報を取得
 		AccountEntity accountList = (AccountEntity) session.getAttribute("account");
-		/**
-		 * accountListから現在ログインしている人のユーザー名を取得
-		 **/
+		// アカウント名を取得
 		String accountName = accountList.getAccountName();
 		model.addAttribute("accountName", accountName);
 		model.addAttribute("registerMessage", "新規記事追加");
 		return "blog-register.html";
 	}
 
-	/**
-	 * このメソッドはブログの投稿を処理するためのメソッドで以下のような処理を行っています。
-	 * セッションから現在のユーザー情報を取得し、そのaccountIdを取得する。 画像ファイル名を取得する。 画像ファイルをアップロードする。
-	 * createBlogPost()メソッドを呼び出して、ブログをデータベースに登録する。
-	 * 登録に成功した場合は、blog-register-fix.htmlにリダイレクトする。
-	 * 登録に失敗した場合は、エラーメッセージをモデルに追加し、blog-register.htmlに戻る。
-	 **/
-	/**
-	 * @param blogTitle    ブログタイトル
-	 * @param registerDate 登録日
-	 * @param category     カテゴリー
-	 * @param blogImage    画像イメージ
-	 * @param article      ブログ詳細
-	 * @param model
-	 * @return
-	 */
+	// 送信されたデータの処理
 	@PostMapping("/register/process")
-	/**
-	 * @RequestParamアノテーション： このアノテーションは、HTTPリクエストのパラメーターを引数にバインドするために使用されます。
-	 * ブログの投稿時に、ブログのタイトル、投稿日、カテゴリ、画像ファイル、詳細をパラメータとして受け取ります。
-	 **/
-	/**
-	 * MultipartFile： MultipartFileは、Spring Frameworkが提供するインターフェースで、
-	 * アップロードされたファイルの内容を扱うためのメソッドを提供しています。
-	 **/
+
 	public String blogRegister(@RequestParam String blogTitle, @RequestParam LocalDate registerDate,
 			@RequestParam String category, @RequestParam MultipartFile blogImage, @RequestParam String article,
 			Model model) {
-		/**
-		 * セッションから現在のユーザー情報を取得するため、sessionオブジェクトを使用しています。
-		 * AccoluntEntityのインスタンスが取得できた場合、そのaccountIdを取得しています。
-		 **/
+		// アカウント情報を取得
 		AccountEntity accountList = (AccountEntity) session.getAttribute("account");
 		Long accountId = accountList.getAccountId();
-		/**
-		 * 現在の日時情報を元に、ファイル名を作成しています。SimpleDateFormatクラスを使用して、日時のフォーマットを指定している。
-		 * 具体的には、"yyyy-MM-dd-HH-mm-ss-"の形式でフォーマットされた文字列を取得している。
-		 * その後、blogImageオブジェクトから元のファイル名を取得し、フォーマットされた日時文字列と連結して、fileName変数に代入
-		 **/
+		// 日時とファイルの名前を取得
 		String fileName = new SimpleDateFormat("yyyy-MM-dd-HH-ss-").format(new Date())
 				+ blogImage.getOriginalFilename();
 		try {
-			/**
-			 * ファイルを実際にサーバー上に保存するための処理を行っています。Files.copy()メソッドを使用して、
-			 * blogImageオブジェクトから入力ストリームを取得し、指定されたパスにファイルをコピー。
-			 * Path.of()メソッドを使用して、保存先のパスを指定している。
-			 * 保存先のパスは、"src/main/resources/static/blog-img/"というディレクトリの中に
-			 * 、fileNameで指定されたファイル名で保存される。。
-			 **/
+			// 保存先を指定します
 			Files.copy(blogImage.getInputStream(), Path.of("src/main/resources/static/blog-img/" + fileName));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		/**
-		 * 最後に、blogService.createBlogPost()メソッドが呼び出され、入力されたデータをデータベースに保存します。
-		 * blogTitle、registerDate、fileName、blogDetail、category、userIdの各引数を使用して、BlogEntityオブジェクトを生成し、
-		 * blogDao.save()メソッドを使用して、データベースに保存します。
-		 * createBlogPost()メソッドはboolean型の戻り値を返します。trueが返された場合は、blog-register-fix.htmlページが表示され、
-		 * falseが返された場合は、既に登録済みであることを示すメッセージが含まれたblog-register.htmlページが表示されます。
-		 **/
+		// 登録した記事を保存します
 		if (blogService.createBlogPost(blogTitle, registerDate, category, fileName, article, accountId)) {
 			return "blog-register-fix.html";
 		} else {
+			// 登録出来なかった場合は画面に既に登録済みですと表示します
 			model.addAttribute("registerMessage", "既に登録済みです");
 			return "blog-register.html";
 		}
 	}
 
-	/**
-	 * @GetMapping("/edit/{blogId}")アノテーションによって、
-	 * GETメソッドで"/edit/{blogId}"にアクセスされた場合に、getBlogEditPage()メソッドが呼び出されます。
-	 * このメソッドは、@PathVariableアノテーションを使用して、URLからパス変数のblogIdを取得しています。
-	 **/
+	// 編集画面の取得
 	@GetMapping("/edit/{blogId}")
 	public String getBlogEditPage(@PathVariable Long blogId, Model model) {
-		/**
-		 * セッションから現在のユーザー情報を取得するため、sessionオブジェクトを使用しています。
-		 * AccountEntityのインスタンスが取得できた場合、そのaccountIdを取得しています。
-		 **/
+		// アカウント情報を取得
 		AccountEntity accountList = (AccountEntity) session.getAttribute("account");
-		/**
-		 * accountListから現在ログインしている人のユーザー名を取得
-		 **/
+		// アカウント名を取得
 		String accountName = accountList.getAccountName();
 		model.addAttribute("accountName", accountName);
-		/**
-		 * blogService.getBlogPost(blogId)を使用して、 指定されたblogIdに対応するブログを取得し、blogListに代入します。
-		 **/
+		// 指定されたblogId対応ブログ内容取得します
 		BlogEntity blogList = blogService.getBlogPost(blogId);
-		/** blogListがnullであれば、"/user/blog/list"にリダイレクトします。 **/
+		// ブログがない場合は一覧画面のまま
 		if (blogList == null) {
 			return "redirecr:/user/blog/list";
 		} else {
-			/** blogListと"記事編集"というメッセージをModelオブジェクトに追加し、"blog-edit.html"に遷移します。 **/
+			// ブログと画面メッセージで記事編集の表示
 			model.addAttribute("blogList", blogList);
 			model.addAttribute("editMessage", "記事編集");
 			return "blog-edit.html";
 		}
 	}
 
-	/**
-	 * @param blogTitle    ブログタイトル
-	 * @param registerDate 登録日
-	 * @param category     カテゴリー
-	 * @param blogId       ブログId
-	 * @param article      ブログ詳細
-	 * @param model
-	 * @return
-	 */
+	// 編集更新の処理
 	@PostMapping("/update")
-	/**
-	 * @RequestParamアノテーション： このアノテーションは、HTTPリクエストのパラメーターを引数にバインドするために使用されます。
-	 * ブログの投稿時に、ブログのタイトル、投稿日、カテゴリ、、詳細をパラメータとして受け取ります。
-	 **/
+
 	public String blogUpdate(@RequestParam String blogTitle, @RequestParam LocalDate registerDate,
 			@RequestParam String category, @RequestParam String article, @RequestParam Long blogId, Model model) {
-		/**
-		 * セッションから現在のユーザー情報を取得するため、sessionオブジェクトを使用しています。
-		 * AccountEntityのインスタンスが取得できた場合、そのaccountIdを取得しています。
-		 **/
+		// アカウント情報を取得
 		AccountEntity accountList = (AccountEntity) session.getAttribute("account");
+		// アカウントidを取得
 		Long accountId = accountList.getAccountId();
-		/**
-		 * blogService.editBlogPost()を使用して、指定されたblogIdに対応するブログを更新します。
-		 * 更新が成功した場合は、"blog-edit-fix.html"に遷移し、
-		 * 更新に失敗した場合は、"blog-edit.html"に"更新に失敗しました"というメッセージを追加して遷移します。
-		 **/
+		// 指定されたblogIdに対応するブログを更新します
 		if (blogService.editBlogPost(blogTitle, registerDate, category, article, accountId, blogId)) {
+			// 成功の場合blog-edit-fix.htmlに飛びます
 			return "blog-edit-fix.html";
 		} else {
+			// 失敗の場合画面に更新に失敗しましたを表示
 			model.addAttribute("registerMessage", "更新に失敗しました");
 			return "blog-edit.html";
 		}
 	}
 
-	/**
-	 * @GetMapping("/image/edit/{blogId}")アノテーションによって、
-	 * GETメソッドで"/edit/{blogId}"にアクセスされた場合に、getBlogEditImagePage()メソッドが呼び出されます。
-	 * このメソッドは、@PathVariableアノテーションを使用して、URLからパス変数のblogIdを取得しています。
-	 **/
+	// 画像編集処理
 	@GetMapping("/image/edit/{blogId}")
 	public String getBlogEditImagePage(@PathVariable Long blogId, Model model) {
-		/**
-		 * セッションから現在のユーザー情報を取得するため、sessionオブジェクトを使用しています。
-		 */
+		// アカウント情報を取得
 		AccountEntity accountList = (AccountEntity) session.getAttribute("account");
-
-		/**
-		 * accountListから現在ログインしている人のユーザー名を取得
-		 **/
+		// アカウント名前を取得
 		String accountName = accountList.getAccountName();
 		model.addAttribute("accountName", accountName);
-		/**
-		 * blogService.getBlogPost(blogId)を使用して、 指定されたblogIdに対応するブログを取得し、blogListに代入します。
-		 **/
+		// blogId対応のブログ内容所得して、blogListで代入
 		BlogEntity blogList = blogService.getBlogPost(blogId);
-		/** blogListがnullであれば、"/user/blog/list"にリダイレクトします。 **/
+		// なかった場合は一覧画面のまま
 		if (blogList == null) {
 			return "redirecr:/user/blog/list";
 		} else {
-			/** blogListと"画像編集"というメッセージをModelオブジェクトに追加し、"blog-edit.html"に遷移します。 **/
+			// あった場合は画像編集画面にとびます
 			model.addAttribute("blogList", blogList);
 			model.addAttribute("editImageMessage", "画像編集");
 			return "blog-edit-img.html";
 		}
 	}
 
-	/**
-	 * このメソッドはブログの投稿を処理するためのメソッドで以下のような処理を行っています。
-	 * セッションから現在のユーザー情報を取得し、そのaccounrIdを取得する。 画像ファイル名を取得する。 画像ファイルをアップロードする。
-	 * createBlogPost()メソッドを呼び出して、ブログをデータベースに登録する。
-	 * 登録に成功した場合は、blog-register-fix.htmlにリダイレクトする。
-	 * 登録に失敗した場合は、エラーメッセージをモデルに追加し、blog-register.htmlに戻る。
-	 **/
-	/**
-	 * @param blogTitle    ブログタイトル
-	 * @param registerDate 登録日
-	 * @param category     カテゴリー
-	 * @param blogImage    画像イメージ
-	 * @param article      ブログ詳細
-	 * @param model
-	 * @return
-	 */
+	// 画像の更新処理
 	@PostMapping("/image/update")
-	/**
-	 * @RequestParamアノテーション： このアノテーションは、HTTPリクエストのパラメーターを引数にバインドするために使用されます。
-	 * ブログの画像更新時に、ブログのタ、画像ファイル、ブログIdをパラメータとして受け取ります。
-	 **/
-	/**
-	 * MultipartFile： MultipartFileは、Spring Frameworkが提供するインターフェースで、
-	 * アップロードされたファイルの内容を扱うためのメソッドを提供しています。
-	 **/
+
 	public String blogImgUpdate(@RequestParam MultipartFile blogImage, @RequestParam Long blogId, Model model) {
-		/**
-		 * セッションから現在のユーザー情報を取得するため、sessionオブジェクトを使用しています。
-		 * AccountEntityのインスタンスが取得できた場合、そのaccountIdを取得しています。
-		 **/
+		// アカウント情報を取得
 		AccountEntity accountList = (AccountEntity) session.getAttribute("account");
+		// アカウントidを取得
 		Long accountId = accountList.getAccountId();
-		/**
-		 * 現在の日時情報を元に、ファイル名を作成しています。SimpleDateFormatクラスを使用して、日時のフォーマットを指定している。
-		 * 具体的には、"yyyy-MM-dd-HH-mm-ss-"の形式でフォーマットされた文字列を取得している。
-		 * その後、blogImageオブジェクトから元のファイル名を取得し、フォーマットされた日時文字列と連結して、fileName変数に代入
-		 **/
+		// 日時とファイルの名前をfileName変数に代入
 		String fileName = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss-").format(new Date())
 				+ blogImage.getOriginalFilename();
 		try {
-			/**
-			 * ファイルを実際にサーバー上に保存するための処理を行っています。Files.copy()メソッドを使用して、
-			 * blogImageオブジェクトから入力ストリームを取得し、指定されたパスにファイルをコピー。
-			 * Path.of()メソッドを使用して、保存先のパスを指定している。
-			 * 保存先のパスは、"src/main/resources/static/blog-img/"というディレクトリの中に
-			 * 、fileNameで指定されたファイル名で保存される。。
-			 **/
+			// ファイルを保存
 			Files.copy(blogImage.getInputStream(), Path.of("src/main/resources/static/blog-img/" + fileName));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		/**
-		 * 最後に、blogService.editBlogImage()メソッドが呼び出され、入力されたデータをデータベースに保存します。
-		 * fileName,、blogId、userIdの各引数を使用して、BlogEntityオブジェクトを生成し、
-		 * blogDao.save()メソッドを使用して、データベースに保存します。
-		 * editBlogImageメソッドはboolean型の戻り値を返します。trueが返された場合は、blog-edit-fix.htmlページが表示され、
-		 * falseが返された場合は、blogListと更新失敗であることを示すメッセージが含まれたblog-img-edit.htmlページが表示されます。
-		 **/
+		// 成功した場合blog-edit-fix.htmlにとびます
 		if (blogService.editBlogImage(blogId, fileName, accountId)) {
 			return "blog-edit-fix.html";
 		} else {
+			// 失敗した場合画面に失敗を表示します
 			BlogEntity blogList = blogService.getBlogPost(blogId);
 			model.addAttribute("blogList", blogList);
 			model.addAttribute("editImageMessage", "更新失敗です");
@@ -350,35 +182,17 @@ public class BlogContgroller {
 		}
 	}
 
-	/**
-	 * @GetMappingアノテーションがgetBlogListPageメソッドに付与されています。 このアノテーションは、HTTP
-	 * GETリクエストを受け取るメソッドであることを示します。
-	 **/
+	// 削除画面の所得
 	@GetMapping("/delete/list")
-	/**
-	 * getBlogListPageメソッドは、Modelクラスのインスタンスを引数に取ります。Modelは、
-	 * コントローラーからビューに渡すためのデータを格納するために使用されます。
-	 **/
 	public String getBlogDeleteListPage(Model model) {
-		/**
-		 * セッションから現在のユーザー情報を取得するため、sessionオブジェクトを使用しています。
-		 * AccountrEntityのインスタンスが取得できた場合、そのaccountIdを取得しています。
-		 **/
+		// アカウントの情報、idを取得
 		AccountEntity accountList = (AccountEntity) session.getAttribute("account");
 		Long accountId = accountList.getAccountId();
-		/**
-		 * accountListから現在ログインしている人のユーザー名を取得
-		 **/
+		// アカウントの名前を取得
 		String accountName = accountList.getAccountName();
-		/**
-		 * blogServiceのfindAllBlogPostメソッドを呼び出して、現在のユーザーに関連するブログ投稿を取得しています。
-		 * 戻り値はBlogEntityのリストであり、このリストをmodelに追加しています。
-		 **/
+		// このアカウントに関するぶろぐ内容を取得
 		List<BlogEntity> blogList = blogService.findAllBlogPost(accountId);
-		/**
-		 * ModelクラスにuserNameとblogList,deleteMessageを追加して、blog-delete.htmlというビューを返しています。
-		 * このビューは、userNameとblogList,deleteMessageを表示するためのHTMLテンプレート
-		 **/
+
 		model.addAttribute("accountName", accountName);
 		model.addAttribute("blogList", blogList);
 		model.addAttribute("deleteMessage", "削除一覧");
@@ -388,68 +202,38 @@ public class BlogContgroller {
 
 	@GetMapping("/delete/detail/{blogId}")
 	public String getBlogDeleteDetailPage(@PathVariable Long blogId, Model model) {
-		/**
-		 * セッションから現在のユーザー情報を取得するため、sessionオブジェクトを使用しています。
-		 * AccountrEntityのインスタンスが取得できた場合、そのaccountIdを取得しています。
-		 **/
+		// アカウントの情報、idを取得
 		AccountEntity accountList = (AccountEntity) session.getAttribute("account");
 		Long accountId = accountList.getAccountId();
-		/**
-		 * accountListから現在ログインしている人のユーザー名を取得
-		 **/
+		// アカウントの名前を取得
 		String accountName = accountList.getAccountName();
-		/**
-		 * blogService.getBlogPost(blogId)を使用して、 指定されたblogIdに対応するブログを取得し、blogListに代入します。
-		 **/
+		// blogId対応のブログ内容所得して、blogListで代入
 		BlogEntity blogList = blogService.getBlogPost(blogId);
-		/** blogListがnullであれば、"/user/blog/list"にリダイレクトします。 **/
+		// ブログはなかった場合はブログ一覧のまま
 		if (blogList == null) {
 			return "redirecr:/user/blog/list";
 		} else {
-			/**
-			 * blogListと"削除記事詳細というメッセージをModelオブジェクトに追加し、 "blog-delete-detail.html"に遷移します。
-			 **/
+			// あった場合は削除記事詳細を表示blog-delete-detail.htmlにとびます
 			model.addAttribute("blogList", blogList);
 			model.addAttribute("DeleteDetailMessage", "削除記事詳細");
 			return "blog-delete-detail.html";
 		}
 	}
 
-	/**
-	 * @param blogId ブログId
-	 * @param model
-	 * @return
-	 */
-	/**
-	 * このソースコードは、Spring MVCのコントローラーにおいて、HTTP POSTリクエストが "/delete" に送信された場合に、
-	 * 指定されたブログ記事を削除するblogDeleteメソッドを定義しています。
-	 * メソッドの引数として、@RequestParamアノテーションを使用して、HTTPリクエストのパラメータとして送信されたblogIdを受け取ります。
-	 * また、Modelクラスを引数にして、Viewに渡すためのデータを設定することができます。
-	 * メソッド内では、blogService.deleteBlog(blogId)を呼び出して、指定されたブログ記事を削除します。
-	 * このメソッドの戻り値がtrueであれば、"blog-delete-fix.html"にリダイレクトします。一方、戻り値がfalseであれば、
-	 * Modelクラスに "DeleteDetailMessage"
-	 * 属性を設定して、"blog-delete.html"に遷移し、エラーメッセージを表示します。
-	 **/
+	// 削除の処理
 	@PostMapping("/delete")
 	public String blogDelete(@RequestParam Long blogId, Model model) {
 		if (blogService.deleteBlog(blogId)) {
+			// 成功した場合はblog-delete-fix.htmlをとびます
 			return "blog-delete-fix.html";
 		} else {
+			// 失敗した場合は画面に記事削除に失敗しましたを表示
 			model.addAttribute("DeleteDetailMessage", "記事削除に失敗しました");
 			return "blog-delete.html";
 		}
 	}
 
-	/**
-	 * @GetMapping("/logout")は、"/logout"エンドポイントに対するHTTP GETリクエストを処理するためのアノテーションです。
-	 * public String Logout()は、ログアウト処理を行うメソッドです。このメソッドは、セッションを無効にして
-	 * 、"/user/login"にリダイレクトすることで、ログアウトを実行します。
-	 * session.invalidate();は、現在のセッションを無効にするために使用されるコードです
-	 * これにより、ユーザーがログアウトしたことが確認されます。 return
-	 * "redirect:/user/login";は、"/user/login"にリダイレクトするために使用されるコードです。
-	 * これにより、ログアウト後にユーザーがログインページにリダイレクトされます。 したがって、このコードは、セッションを無効にして、ユーザーをログアウトし、
-	 * ログインページにリダイレクトすることにより、ユーザーの認証を管理します。
-	 **/
+	// ログアウトしたらログイン画面に戻ります
 	@GetMapping("/logout")
 	public String Logout() {
 

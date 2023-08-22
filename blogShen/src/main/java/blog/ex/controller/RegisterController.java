@@ -9,57 +9,24 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import blog.ex.service.AccountService;
 
-/**
- * @RequestMappingアノテーションは、HTTPリクエストに対するマッピングを設定するために使用されます。
- * "/user"と指定されているので、このコントローラーのすべてのエンドポイントは"/user"で始まります。
- *エンドポイント（Endpoint）は、Webサービスにおいて、外部からアクセス可能なURLやURIのことを指します。
- *つまり、クライアント（Webブラウザやスマートフォンアプリなど）がWebサービスにリクエストを送信するために使用するURLのことです。
- */
+//全てのurlの前に/user/を追加
 @RequestMapping("/user")
-/**
- * @Controllerアノテーションは、Spring Frameworkがコンポーネントスキャン機能
- * によってこのクラスをDIコンテナに登録するために使用されます。
- * これにより、UserRegisterControllerクラスは、他のコンポーネントに注入されることができ,
- * システム内で一元的に管理されることができます。
- * コンポーネントスキャン機能は、Spring Frameworkにおいて、アノテーションで構成されたクラスを自動的に検出し、
- * DIコンテナに登録するための機能です
- * DI（Dependency Injection）コンテナは、Spring Frameworkが提供する機能の一つで、アプリケーションに必要なオブジェクトを管理する仕組みです。
- *通常、アプリケーションに必要なオブジェクトは、new演算子を使用してインスタンス化していますが、
- *DIコンテナを使用すると、オブジェクトの生成や注入を自動的に行うことができます。
- **/
 @Controller
 public class RegisterController {
-	/**
-	 * @Autowiredアノテーションは、DIコンテナが自動的にAccountServiceインスタンスを
-	 * 注入するために使用されます。これにより、RegisterControllerクラスは、
-	 * AccountServiceクラスのメソッドを呼び出すことができ、新規登録の処理を実行することができます。
-	 **/
-	 @Autowired
-	 private AccountService accountService;
-	/**
-	 * @GetMappingアノテーションは、HTTP GETリクエストに対するマッピングを設定するために使用されます。
-	 * "/register"と指定されているので、このエンドポイントは"/user/register"でアクセス可能です。
-	 * getUserRegisterPage()メソッドは、"register.html"を返すことで、新規登録画面を表示します。**/
-    @GetMapping("/register")
-    public String getRegisterPage() {
-    	return "register.html";
-    }
+	@Autowired
+	private AccountService accountService;
 
-	/**
-	 * @PostMappingアノテーションは、HTTP POSTリクエストに対するマッピングを設定するために使用されます。
-	 * "/register/process"と指定されているので、このエンドポイントは"/user/register/process"でアクセス可能です。
-	 * register()メソッドは、リクエストパラメーターからユーザー情報を取得し、
-	 * AccountServiceのcreateAccount()メソッドを呼び出して、新規登録処理を行います。処理が成功した場合、"/user/login"にリダイレクトします。**/
-	/**
-	 * @param accountName ユーザー名
-	 * @param accountEmail　メールアドレス
-	 * @param password　パスワード
-	 * @return　"redirect:/user/login"
-	 */
-    @PostMapping("/register/process")
-    public String register(@RequestParam String name,@RequestParam String email,@RequestParam String password) {
-    	accountService.createAccount(name, email, password);
-    	return"redirect:/user/login";
-    }
- 
+	// 登録画面を表示
+	@GetMapping("/register")
+	public String getRegisterPage() {
+		return "register.html";
+	}
+
+	// ユーザー情報の登録
+	@PostMapping("/register/process")
+	public String register(@RequestParam String name, @RequestParam String email, @RequestParam String password) {
+		accountService.createAccount(name, email, password);
+		return "redirect:/user/login";
+	}
+
 }
