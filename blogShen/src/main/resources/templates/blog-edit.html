@@ -38,13 +38,13 @@
 				</div>
 				<form th:action="@{/user/blog/update}" method="post">
 					<div class="register-input">
-						<label for="blogTitle">タイトル</label>
+						<label for="blogTitle" id="blogTitle">タイトル</label>
 						<input type="text" name="blogTitle" th:value="${blogList.blogTitle}">
-						<label for="registerDate">日付</label>
+						<label for="registerDate" id="registerDate">日付</label>
 						<input type="date" name="registerDate" th:value="${blogList.registerDate}">
-						<label for="category">カテゴリ</label>
+						<label for="category" id="category">カテゴリ</label>
 						<input type="text" name="category" th:value="${blogList.category}">
-						<label for="article">詳細</label>
+						<label for="article" id="article">詳細</label>
 						<textarea name="article" id="" cols="40" rows="10" th:text="${blogList.article}"></textarea>
 						<input type="hidden" name="blogId" th:value="${blogList.blogId}">
 						<div class="register-button">

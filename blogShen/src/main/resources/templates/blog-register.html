@@ -32,15 +32,15 @@
 			<div class="register-form">
 				<form th:action="@{/user/blog/register/process}" enctype="multipart/form-data" method="post">
 					<div class="register-input">
-						<label for="blogTitle">タイトル</label>
+						<label for="blogTitle" id="blogTitle">タイトル</label>
 						<input type="text" name="blogTitle">
-						<label for="blogDate">日付</label>
+						<label for="blogDate" id="registerDate">日付</label>
 						<input type="date" name="registerDate">
-						<label for="category">カテゴリ</label>
+						<label for="category" id="category">カテゴリ</label>
 						<input type="text" name="category">
-						<label for="blogImage">画像</label>
+						<label for="blogImage" id="blogImage">画像</label>
 						<input type="file" name="blogImage">
-						<label for="article">詳細</label>
+						<label for="article" id="article">詳細</label>
 						<textarea name="article" id="" cols="40" rows="10"></textarea>
 						<div class="register-button">
 							<button class="add">登録</button>
